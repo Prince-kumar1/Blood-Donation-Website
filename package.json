@@ -24,6 +24,8 @@
     "moment": "^2.29.4",
     "mongoose": "^8.0.3",
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   }
 }

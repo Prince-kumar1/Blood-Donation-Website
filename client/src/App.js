@@ -16,6 +16,7 @@ import DonarList from './pages/admin/DonarList';
 import HospitalList from './pages/admin/HospitalList';
 import OrgList from './pages/admin/OrgList';
 import AdminHome from './pages/admin/AdminHome';
+import ContactRequests from './pages/ContactRequests';
 function App() {
   return (
     <>
@@ -97,6 +98,11 @@ function App() {
         <Route path="/register" element={
             <PublicRoute>
               <Register/>
+            </PublicRoute>
+        } />
+        <Route path="/contact" element={
+            <PublicRoute>
+              <ContactRequests/>
             </PublicRoute>
         } />
       </Routes>
