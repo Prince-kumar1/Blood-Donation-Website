@@ -1,0 +1,9 @@
+# dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# cache
+.cache/
+client/.cache/
+git add .gitignore
