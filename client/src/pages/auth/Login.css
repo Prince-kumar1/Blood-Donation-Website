@@ -1,0 +1,296 @@
+/* Login.css */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.red-blood-cells {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(187, 10, 30, 0.1);
+  animation: float 15s infinite linear;
+}
+
+.red-blood-cells:nth-child(1) {
+  width: 200px;
+  height: 200px;
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.red-blood-cells:nth-child(2) {
+  width: 150px;
+  height: 150px;
+  top: 60%;
+  right: 10%;
+  animation-delay: -5s;
+}
+
+.red-blood-cells:nth-child(3) {
+  width: 100px;
+  height: 100px;
+  bottom: 15%;
+  left: 20%;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+    opacity: 0.5;
+  }
+}
+
+.login-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  padding: 0;
+}
+
+.login-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(187, 10, 30, 0.15);
+  overflow: hidden;
+  width: 100%;
+}
+
+.login-header {
+  background: #bb0a1e;
+  padding: 30px 20px;
+  text-align: center;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blood-drop-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+}
+
+.app-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+}
+
+.app-tagline {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.login-form-section {
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.loading-text {
+  margin-top: 20px;
+  color: #bb0a1e;
+  font-weight: 500;
+}
+
+.login-footer {
+  padding: 20px;
+  text-align: center;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  font-size: 14px;
+}
+
+.register-link {
+  color: #bb0a1e;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+/* Form component adjustments */
+.form-container {
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-title {
+  color: #bb0a1e;
+  margin-bottom: 25px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #bb0a1e;
+  box-shadow: 0 0 0 3px rgba(187, 10, 30, 0.2);
+  outline: none;
+}
+
+.form-button {
+  width: 100%;
+  padding: 12px;
+  background: #bb0a1e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+  box-sizing: border-box;
+}
+
+.form-button:hover {
+  background: #9d0919;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 15px;
+  }
+  
+  .login-content {
+    max-width: 100%;
+  }
+  
+  .login-header {
+    padding: 25px 15px;
+  }
+  
+  .blood-drop-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .app-title {
+    font-size: 24px;
+  }
+  
+  .login-form-section {
+    padding: 25px 20px;
+  }
+  
+  .form-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 10px;
+  }
+  
+  .login-header {
+    padding: 20px 10px;
+  }
+  
+  .blood-drop-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .app-title {
+    font-size: 20px;
+  }
+  
+  .app-tagline {
+    font-size: 12px;
+  }
+  
+  .login-form-section {
+    padding: 20px 15px;
+  }
+  
+  .form-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-input {
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-bottom: 15px;
+  }
+  
+  .form-button {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .login-footer {
+    padding: 15px;
+    font-size: 12px;
+  }
+  
+  .red-blood-cells:nth-child(1) {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .red-blood-cells:nth-child(2) {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .red-blood-cells:nth-child(3) {
+    width: 60px;
+    height: 60px;
+  }
+}

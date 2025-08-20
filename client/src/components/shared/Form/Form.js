@@ -55,7 +55,7 @@ const Form = ({ formType, submitBtn, formTitle }) => {
               Donar
             </label>
           </div>
-          <div className="form-check ms-2">
+          {/* <div className="form-check ms-2">
             <input
               type="radio"
               className="form-check-input"
@@ -93,7 +93,7 @@ const Form = ({ formType, submitBtn, formTitle }) => {
             <label htmlFor="organisationRadio" className="form-check-label">
               Organisation
             </label>
-          </div>
+          </div> */}
         </div>
 
         {(() => {

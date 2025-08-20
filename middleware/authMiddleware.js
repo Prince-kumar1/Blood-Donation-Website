@@ -2,12 +2,31 @@ const JWT = require("jsonwebtoken");
 
 module.exports = async (req, res, next) => {
   try {
-    const token = req.headers["authorization"].split(" ")[1];
+    // Check if authorization header exists
+    if (!req.headers.authorization) {
+      return res.status(401).send({
+        success: false,
+        message: "Authorization header missing",
+      });
+    }
+
+    // Split the token from the "Bearer" prefix
+    const authHeader = req.headers.authorization;
+    if (!authHeader.startsWith("Bearer ")) {
+      return res.status(401).send({
+        success: false,
+        message: "Invalid authorization format. Use 'Bearer <token>'",
+      });
+    }
+
+    const token = authHeader.split(" ")[1];
+    
+    // Verify the token
     JWT.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
         return res.status(401).send({
           success: false,
-          message: "Auth Failed While Decrpytion",
+          message: "Invalid or expired token",
         });
       } else {
         req.body.userId = decode.userId;
@@ -15,11 +34,11 @@ module.exports = async (req, res, next) => {
       }
     });
   } catch (error) {
-    console.log(error);
-    return res.status(401).send({
+    console.log("Auth Middleware Error:", error);
+    return res.status(500).send({
       success: false,
-      error,
-      message: "Auth Failed",
+      message: "Internal server error in authentication",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };

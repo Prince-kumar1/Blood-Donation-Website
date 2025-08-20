@@ -1,0 +1,140 @@
+/* Status Badge Styles */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  cursor: default;
+  white-space: nowrap;
+}
+
+/* Available Status */
+.status-available {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+}
+
+.status-available:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+}
+
+/* In Contact Status */
+.status-in-contact {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  color: #212529;
+  box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+}
+
+.status-in-contact:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+}
+
+/* Collected Status */
+.status-collected {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+}
+
+.status-collected:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+}
+
+/* Expired Status */
+.status-expired {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.status-expired:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4);
+}
+
+/* Reserved Status */
+.status-reserved {
+  background: linear-gradient(135deg, #6f42c1 0%, #5a32a3 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(111, 66, 193, 0.3);
+}
+
+.status-reserved:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(111, 66, 193, 0.4);
+}
+
+/* Pulsing animation for available status */
+.status-available {
+  animation: pulse-available 2s infinite;
+}
+
+@keyframes pulse-available {
+  0% {
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.5);
+  }
+  100% {
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .status-badge {
+    font-size: 10px;
+    padding: 4px 8px;
+    letter-spacing: 0.3px;
+  }
+}
+
+/* Accessibility improvements */
+.status-badge:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Status badge container for better alignment in tables */
+.status-badge-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 32px;
+}
+
+/* Additional status variants */
+.status-pending {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+}
+
+.status-urgent {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+  animation: pulse-urgent 1.5s infinite;
+}
+
+@keyframes pulse-urgent {
+  0% {
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(231, 76, 60, 0.7);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3);
+  }
+}

@@ -259,6 +259,222 @@ const getOrgnaisationForHospitalController = async (req, res) => {
   }
 };
 
+// Contact request controller
+const contactRequestController = async (req, res) => {
+  try {
+    const { inventoryId, message } = req.body;
+    const requester = req.body.userId;
+    
+    const inventory = await inventoryModel.findById(inventoryId);
+    if (!inventory) {
+      return res.status(404).send({
+        success: false,
+        message: "Inventory not found"
+      });
+    }
+    
+    // Check if already has a pending request
+    const existingRequest = inventory.contactRequests.find(
+      request => request.requester.toString() === requester && 
+                request.status === "pending"
+    );
+    
+    if (existingRequest) {
+      return res.status(400).send({
+        success: false,
+        message: "You already have a pending request for this blood"
+      });
+    }
+    
+    inventory.contactRequests.push({
+      requester,
+      message
+    });
+    
+    await inventory.save();
+    
+    // Get IO instance and emit event
+    const io = req.app.get('socketio');
+    io.to(inventory.donar.toString()).emit('new-contact-request', {
+      from: req.user,
+      inventoryId: inventory._id,
+      message
+    });
+    
+    return res.status(200).send({
+      success: true,
+      message: "Contact request sent successfully"
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in contact request",
+      error
+    });
+  }
+};
+
+// Update request status controller
+const updateRequestStatusController = async (req, res) => {
+  try {
+    const { inventoryId, requestId, status } = req.body;
+    const userId = req.body.userId;
+    
+    const inventory = await inventoryModel.findById(inventoryId);
+    if (!inventory) {
+      return res.status(404).send({
+        success: false,
+        message: "Inventory not found"
+      });
+    }
+    
+    // Check if user owns the inventory
+    if (inventory.donar.toString() !== userId) {
+      return res.status(403).send({
+        success: false,
+        message: "Not authorized to update this request"
+      });
+    }
+    
+    const request = inventory.contactRequests.id(requestId);
+    if (!request) {
+      return res.status(404).send({
+        success: false,
+        message: "Request not found"
+      });
+    }
+    
+    request.status = status;
+    
+    // If accepted, update inventory status
+    if (status === "accepted") {
+      inventory.status = "in-contact";
+      
+      // Reject all other pending requests
+      inventory.contactRequests.forEach(req => {
+        if (req.status === "pending" && req._id.toString() !== requestId) {
+          req.status = "rejected";
+        }
+      });
+    }
+    
+    await inventory.save();
+    
+    // Notify the requester
+    const io = req.app.get('socketio');
+    io.to(request.requester.toString()).emit('request-status-updated', {
+      inventoryId: inventory._id,
+      requestId,
+      status
+    });
+    
+    return res.status(200).send({
+      success: true,
+      message: `Request ${status} successfully`
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error updating request status",
+      error
+    });
+  }
+};
+
+// Update inventory status controller
+const updateInventoryStatusController = async (req, res) => {
+  try {
+    const { inventoryId, status } = req.body;
+    const userId = req.body.userId;
+    
+    const inventory = await inventoryModel.findById(inventoryId);
+    if (!inventory) {
+      return res.status(404).send({
+        success: false,
+        message: "Inventory not found"
+      });
+    }
+    
+    // Check if user owns the inventory or is an admin
+    if (inventory.donar.toString() !== userId && req.user.role !== "admin") {
+      return res.status(403).send({
+        success: false,
+        message: "Not authorized to update this inventory"
+      });
+    }
+    
+    inventory.status = status;
+    await inventory.save();
+    
+    // Notify all users who had contact requests
+    const io = req.app.get('socketio');
+    inventory.contactRequests.forEach(request => {
+      io.to(request.requester.toString()).emit('inventory-status-updated', {
+        inventoryId: inventory._id,
+        status
+      });
+    });
+    
+    return res.status(200).send({
+      success: true,
+      message: `Inventory status updated to ${status}`
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error updating inventory status",
+      error
+    });
+  }
+};
+
+// Get contact requests for user
+const getContactRequestsController = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    
+    // Get inventories where user is donor and has contact requests
+    const inventories = await inventoryModel.find({
+      donar: userId,
+      'contactRequests.0': { $exists: true }
+    }).populate('contactRequests.requester', 'name email phone');
+    
+    const requests = [];
+    inventories.forEach(inventory => {
+      inventory.contactRequests.forEach(request => {
+        requests.push({
+          _id: request._id,
+          inventoryId: inventory._id,
+          bloodGroup: inventory.bloodGroup,
+          quantity: inventory.quantity,
+          requester: request.requester,
+          message: request.message,
+          status: request.status,
+          createdAt: request.timestamp
+        });
+      });
+    });
+    
+    // Sort by date, newest first
+    requests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    return res.status(200).send({
+      success: true,
+      message: "Contact requests fetched successfully",
+      requests
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error fetching contact requests",
+      error
+    });
+  }
+};
 module.exports = {
   createInventoryController,
   getInventoryController,
@@ -268,4 +484,8 @@ module.exports = {
   getOrgnaisationForHospitalController,
   getInventoryHospitalController,
   getRecentInventoryController,
+    contactRequestController,
+  updateRequestStatusController,
+  updateInventoryStatusController,
+  getContactRequestsController
 };

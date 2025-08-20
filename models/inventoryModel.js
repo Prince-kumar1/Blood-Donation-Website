@@ -39,6 +39,28 @@ const inventorySchema = new mongoose.Schema(
         return this.inventoryType === "in";
       },
     },
+    status: {
+      type: String,
+      enum: ["available", "in-contact", "collected", "expired"],
+      default: "available"
+    },
+    contactRequests: [{
+      requester: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
+        required: true
+      },
+      message: String,
+      timestamp: {
+        type: Date,
+        default: Date.now
+      },
+      status: {
+        type: String,
+        enum: ["pending", "accepted", "rejected"],
+        default: "pending"
+      }
+    }]
   },
   { timestamps: true }
 );
