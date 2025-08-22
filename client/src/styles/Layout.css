@@ -1,43 +1,179 @@
-.sidebar{
-    height: 100vh !important;
-    border-radius: 0px 10px 10px 0px;
-    background-color: rgb(134, 15, 15);
-    box-shadow: 0 0 2px rgb(255, 0, 0);
-    color: white;
+/* Layout.css - Redesigned for bottom-fixed sidebar card */
+
+/* Reset and base styles */
+.sidebar {
+    position: fixed;
+    bottom: 20px;
+    left: 13%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: rgb(203, 11, 11);
+    border-radius: 16px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.menu{
-    padding-top: 100px;
+.sidebar:hover {
+    box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.menu-item{
-    padding-top:20px ;
+.menu {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
 }
 
-.menu-item a{
-    color: white;
+/* Menu item styles for the card layout */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
     text-decoration: none;
-    font-size: 1.2rem;
+    color: #333;
+    border-bottom: 1px solid #a61818;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
-.menu-item i{
-    font-size: 1.2rem;
-    margin: 0 15px;
-    color: white;
+.menu-item:last-child {
+    border-bottom: none;
 }
 
-.active{
-    background-color: white;
-    padding: 10px;
-    margin-top: 25px;
-    box-shadow: 0 0 7px rgb(255, 0, 0);
-    border-radius: 0px 10px 10px 0px;
+.menu-item:hover {
+    background-color: #f8f9fa;
+    color: #15181c;
 }
 
-.active a{
-    color: rgb(134, 15, 15);
+.menu-item.active {
+    background-color: #e8f4ff;
+    color: #151616;
+    font-weight: 600;
 }
 
-.active i{
-    color: rgb(134, 15, 15);
+.menu-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #090909;
+    border-radius: 0 2px 2px 0;
+}
+
+.menu-item i {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+}
+
+.menu-item span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Section divider */
+.menu-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+    margin: 5px 0;
+}
+
+/* Role-based sections */
+.role-section {
+    padding: 12px 0 5px 0;
+    position: relative;
+}
+
+.role-section-header {
+    padding: 0 20px 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.role-section-header::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-left: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 95%;
+        bottom: 10px;
+    }
+
+    .menu-item {
+        padding: 14px 16px;
+    }
+
+    .menu-item i {
+        font-size: 16px;
+        margin-right: 10px;
+    }
+
+    .menu-item span {
+        font-size: 13px;
+    }
+}
+
+/* Animation for menu items */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Focus styles for accessibility */
+.menu-item:focus {
+    outline: 2px solid #007bff;
+    outline-offset: -2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .menu-item {
+        border-bottom: 2px solid #000;
+    }
+
+    .menu-item.active {
+        background-color: #000;
+        color: #fff;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    .sidebar,
+    .menu-item {
+        transition: none;
+    }
+
+    .menu-item {
+        animation: none;
+    }
 }

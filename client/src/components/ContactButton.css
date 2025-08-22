@@ -6,7 +6,7 @@
 
 .contact-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modal-overlay {
@@ -15,61 +15,72 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
+  z-index: 10000;
+  /* Increased z-index to ensure it's on top */
+  padding: 0;
+  overflow: auto;
 }
 
 .modal {
   background: white;
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 800px;
+  /* Increased max-width for larger screens */
+  max-height: 95vh;
   overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   animation: modalSlideIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-50px);
+    transform: translateY(-50px) scale(0.95);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .modal-header {
-  padding: 20px;
+  padding: 25px 30px;
   border-bottom: 1px solid #dee2e6;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #f8f9fa;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .modal-header h2 {
   margin: 0;
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
 .close-btn {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   color: #6c757d;
   padding: 0;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,106 +91,117 @@
 .close-btn:hover {
   background-color: #e9ecef;
   color: #495057;
+  transform: rotate(90deg);
 }
 
 .modal-body {
-  padding: 20px;
+  padding: 30px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .blood-info {
   background-color: #f8f9fa;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
-  border-left: 4px solid #007bff;
+  margin-bottom: 25px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .blood-info h4 {
   color: #333;
-  margin-bottom: 15px;
-  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  font-weight: 600;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 .info-item strong {
   color: #495057;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .info-item span {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #212529;
 }
 
 .blood-type {
   background-color: #dc3545;
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: bold;
   display: inline-block;
-  margin-top: 2px;
+  margin-top: 5px;
+  font-size: 1.1rem;
 }
 
 .message-section {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .message-section label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   font-weight: 600;
   color: #333;
+  font-size: 1.1rem;
 }
 
 .message-section textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 16px;
   font-family: inherit;
   resize: vertical;
-  min-height: 100px;
-  transition: border-color 0.2s ease;
+  min-height: 150px;
+  transition: all 0.3s ease;
+  line-height: 1.5;
 }
 
 .message-section textarea:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
 }
 
 .char-count {
   display: block;
   text-align: right;
   color: #6c757d;
-  font-size: 12px;
-  margin-top: 5px;
+  font-size: 14px;
+  margin-top: 8px;
 }
 
 .contact-tips {
   background-color: #e7f3ff;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
-  border-left: 4px solid #17a2b8;
+  border-left: 5px solid #17a2b8;
+  margin-top: 20px;
 }
 
 .contact-tips h5 {
-  margin: 0 0 10px 0;
+  margin: 0 0 15px 0;
   color: #333;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .contact-tips ul {
@@ -189,65 +211,79 @@
 
 .contact-tips li {
   color: #495057;
-  margin-bottom: 5px;
-  font-size: 14px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .modal-footer {
-  padding: 20px;
+  padding: 25px 30px;
   border-top: 1px solid #dee2e6;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
+  gap: 15px;
   background-color: #f8f9fa;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 12px 12px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  min-width: 120px;
+  justify-content: center;
 }
 
 .btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none !important;
 }
 
 .btn-primary {
   background-color: #007bff;
   color: white;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
 }
 
 .btn-secondary {
   background-color: #6c757d;
   color: white;
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
 }
 
 .btn-secondary:hover:not(:disabled) {
   background-color: #545b62;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(108, 117, 125, 0.4);
 }
 
 .btn-sm {
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 8px 16px;
+  font-size: 14px;
+  min-width: 100px;
 }
 
 .spinner {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   border: 2px solid transparent;
   border-top: 2px solid currentColor;
   border-radius: 50%;
@@ -261,11 +297,14 @@
 }
 
 .alert {
-  padding: 12px 16px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 14px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 16px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .alert.success {
@@ -280,28 +319,140 @@
   border: 1px solid #f5c6cb;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
+.alert-icon {
+  font-size: 20px;
+}
+
+/* Responsive design for full-page experience */
+@media (max-width: 992px) {
   .modal {
+    width: 98%;
+    max-width: none;
     margin: 10px;
-    max-height: 95vh;
+    border-radius: 8px;
   }
-  
+
+  .modal-header {
+    padding: 20px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .modal-footer {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .modal {
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
   .modal-header,
   .modal-body,
   .modal-footer {
     padding: 15px;
   }
-  
+
+  .modal-header {
+    position: relative;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+
   .info-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .modal-footer {
     flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
-  
+
   .btn {
+    width: 100%;
     justify-content: center;
+  }
+
+  .blood-info h4 {
+    font-size: 1.2rem;
+  }
+
+  .message-section textarea {
+    font-size: 16px;
+    /* Prevents zoom on iOS */
+  }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .blood-info {
+    padding: 15px;
+  }
+
+  .contact-tips {
+    padding: 15px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Custom scrollbar for modal */
+.modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 12px 12px 0;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.modal::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Animation for alert */
+.alert {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

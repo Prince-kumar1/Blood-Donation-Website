@@ -8,6 +8,7 @@ const initialState = {
   user: null,
   token,
   error: null,
+  success: false,
 };
 
 const authSlice = createSlice({
@@ -69,4 +70,4 @@ const authSlice = createSlice({
   },
 });
 
-export default authSlice;
+export default authSlice.reducer

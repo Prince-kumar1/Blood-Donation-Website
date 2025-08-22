@@ -16,17 +16,22 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [messagesLoading, setMessagesLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('inventory');
+  const [errorMessage, setErrorMessage] = useState('');
   const { error, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const getBloodRecords = async () => {
     try {
+      // Add error handling and check if API endpoint exists
       const { data } = await API.get('/inventory/get-inventory');
       if (data?.success) {
         setData(data?.inventory);
+      } else {
+        setErrorMessage('Failed to load inventory data');
       }
     } catch (error) {
-      console.log(error);
+      console.error('API Error:', error);
+      setErrorMessage('Server error. Please check if the backend is running.');
     } finally {
       setLoading(false);
     }
@@ -39,7 +44,7 @@ const HomePage = () => {
         setContactRequests(data?.requests);
       }
     } catch (error) {
-      console.log('Error fetching contact requests:', error);
+      console.error('Error fetching contact requests:', error);
     } finally {
       setMessagesLoading(false);
     }
@@ -52,35 +57,59 @@ const HomePage = () => {
         requestId,
         status
       });
-      
+
       if (data?.success) {
         getContactRequests();
         getBloodRecords();
         alert(`Request ${status} successfully!`);
       }
     } catch (error) {
-      console.log('Error updating request status:', error);
+      console.error('Error updating request status:', error);
       alert('Error updating request status');
     }
   };
 
   useEffect(() => {
+    // Redirect admin users
+    if (user?.role === 'admin') {
+      navigate('/admin');
+      return;
+    }
+
     getBloodRecords();
     getContactRequests();
-  }, []);
+  }, [user, navigate]);
 
   return (
     <Layout>
-      {user?.role === 'admin' && navigate('/admin')}
       {error && <span>{alert(error)}</span>}
-      
+
       {/* Animated Background Elements */}
       <div className="blood-background">
         <div className="blood-cell-animation blood-cell-1"></div>
         <div className="blood-cell-animation blood-cell-2"></div>
         <div className="blood-cell-animation blood-cell-3"></div>
       </div>
-      
+
+      {errorMessage && (
+        <div className="container mt-4">
+          <div className="alert alert-danger" role="alert">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            {errorMessage}
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-danger ms-3"
+              onClick={() => {
+                setErrorMessage('');
+                getBloodRecords();
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="d-flex justify-content-center align-items-center min-vh-50">
           <div className="text-center">
@@ -135,7 +164,7 @@ const HomePage = () => {
                   className={`blood-tab-btn ${activeTab === 'inventory' ? 'active' : ''}`}
                   onClick={() => setActiveTab('inventory')}
                 >
-                  <i className="fas fa-tint me-2"></i> 
+                  <i className="fas fa-tint me-2"></i>
                   Blood Inventory
                   <span className="blood-tab-badge">{data.length}</span>
                 </button>
@@ -143,7 +172,7 @@ const HomePage = () => {
                   className={`blood-tab-btn ${activeTab === 'messages' ? 'active' : ''}`}
                   onClick={() => setActiveTab('messages')}
                 >
-                  <i className="fas fa-inbox me-2"></i> 
+                  <i className="fas fa-inbox me-2"></i>
                   Blood Requests
                   {contactRequests.filter(req => req.status === 'pending').length > 0 && (
                     <span className="blood-tab-badge badge-pulse">
@@ -159,9 +188,9 @@ const HomePage = () => {
           {activeTab === 'inventory' && (
             <>
               <div className="container mb-4">
-                <div 
+                <div
                   className="blood-add-card animate__animated animate__pulse animate__infinite"
-                  data-bs-toggle="modal" 
+                  data-bs-toggle="modal"
                   data-bs-target="#staticBackdrop"
                 >
                   <div className="blood-add-content">
@@ -190,10 +219,10 @@ const HomePage = () => {
                     </thead>
                     <tbody>
                       {data?.map((record, index) => (
-                        <tr 
+                        <tr
                           key={record._id}
                           className={`animate__animated animate__fadeInUp blood-table-row`}
-                          style={{animationDelay: `${index * 0.1}s`}}
+                          style={{ animationDelay: `${index * 0.1}s` }}
                         >
                           <td>
                             <span className="blood-group-badge">
@@ -225,7 +254,7 @@ const HomePage = () => {
                       ))}
                     </tbody>
                   </table>
-                  
+
                   {data.length === 0 && (
                     <div className="text-center py-5">
                       <i className="fas fa-tint text-muted display-4 mb-3"></i>
@@ -259,12 +288,12 @@ const HomePage = () => {
                   ) : (
                     <div className="row">
                       {contactRequests.map((request, index) => (
-                        <div 
-                          className="col-md-6 col-lg-4 mb-4" 
+                        <div
+                          className="col-md-6 col-lg-4 mb-4"
                           key={request._id}
                         >
                           <div className={`blood-request-card animate__animated animate__fadeInUp ${request.status}`}
-                               style={{animationDelay: `${index * 0.1}s`}}>
+                            style={{ animationDelay: `${index * 0.1}s` }}>
                             <div className="blood-request-header">
                               <div className="blood-request-group">
                                 <i className="fas fa-tint"></i>
@@ -274,7 +303,7 @@ const HomePage = () => {
                                 {request.status.toUpperCase()}
                               </span>
                             </div>
-                            
+
                             <div className="blood-request-body">
                               <div className="blood-request-info">
                                 <i className="fas fa-user"></i>
@@ -294,7 +323,7 @@ const HomePage = () => {
                                 <i className="fas fa-weight"></i>
                                 <span>{request.quantity} ml requested</span>
                               </div>
-                              
+
                               {request.message && (
                                 <div className="blood-request-message">
                                   <i className="fas fa-comment"></i>
@@ -302,13 +331,13 @@ const HomePage = () => {
                                 </div>
                               )}
                             </div>
-                            
+
                             <div className="blood-request-footer">
                               <div className="blood-request-time">
                                 <i className="fas fa-clock"></i>
                                 {moment(request.createdAt).fromNow()}
                               </div>
-                              
+
                               {request.status === 'pending' && (
                                 <div className="blood-request-actions">
                                   <button
